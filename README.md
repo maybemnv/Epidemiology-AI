@@ -1,6 +1,6 @@
 # Epidemiology AI: Disease Outbreak Early Warning System
 
-> **🚀 Quick Start**: Run `python main.py` for instructions, or jump straight to [QUICKSTART.md](QUICKSTART.md) for a 5-minute demo!
+> **Quick Start**: Run `python main.py` for instructions, or jump straight to [QUICKSTART.md](QUICKSTART.md) for a 5-minute demo!
 
 ## Overview
 
@@ -41,34 +41,47 @@ A machine learning model learns the normal pattern and detects anomalies indicat
 
 ```
 D:\Projects\Epidemiology AI\
-├── data/           # Data files and datasets
-├── documentation/  # Project documentation and design specs
-├── frontend/       # React/TypeScript frontend application
-├── models/         # Trained ML models
-├── notebooks/      # Jupyter notebooks for data analysis
-├── src/            # Backend source code
-├── tests/          # Test files
-├── prototype_demo.py # Core prototype implementation
-├── main.py         # Entry point for the application
-├── pyproject.toml  # Python project configuration
-├── Dockerfile      # Containerization instructions
-├── compose.yaml    # Docker Compose configuration
-└── requirements.txt # Python dependencies
+├── data/              # Data files and datasets
+├── documentation/     # Project documentation and design specs
+├── frontend/          # React/TypeScript frontend application
+├── migrations/        # Database migrations (Alembic)
+├── models/            # Trained ML models
+├── notebooks/         # Jupyter notebooks for data analysis
+├── src/               # Backend source code
+│   ├── api/           # API Endpoints (FastAPI)
+│   ├── database/      # Database models and core logic
+│   └── models/        # ML prediction logic
+├── tests/             # Test files
+├── main.py            # Entry point for the application
+├── pyproject.toml     # Project dependencies and config
+├── alembic.ini        # Migration configuration
+└── requirements.txt   # Python dependencies
 ```
 
 ## How to Run the Prototype
 
-1. Install dependencies:
+1. **Install Dependencies**:
+   We recommended using `uv` for fast dependency management, but `pip` works too.
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   # OR
+   uv sync
+   ```
 
-2. Run the prototype demonstration:
+2. **Setup Database**:
+   Ensure PostgreSQL is running, then apply migrations:
 
-```bash
-python main.py
-```
+   ```bash
+   # Make sure .env has correct DATABASE_URL
+   alembic upgrade head
+   ```
+
+3. **Run the Application**:
+
+   ```bash
+   uv run main.py
+   ```
 
 This will run the prototype that demonstrates the core concept of using multiple data sources and machine learning to predict disease outbreaks.
 
