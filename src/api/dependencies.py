@@ -63,14 +63,6 @@ def get_model_service() -> ModelService:
     return _model_service
 
 
-def reload_model_service() -> bool:
-    """Reload the model service with fresh model from disk"""
-    global _model_service
-    _model_service = None
-    init_model_service()
-    return _model_service.is_model_loaded()
-
-
 # ============================================================================
 # Utility Functions
 # ============================================================================

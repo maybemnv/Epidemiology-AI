@@ -1,22 +1,19 @@
-"""
-Model Management Routes
-
-Endpoints for model information and management.
-"""
-
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 
 from ..schemas import ModelStatsResponse, ModelReloadResponse
-from ..dependencies import get_model_service, reload_model_service
+from ..dependencies import get_model_service
 from ...models.service import ModelService
 
 router = APIRouter(prefix="/model", tags=["Model"])
 
+# Define common dependency outside functions to avoid B008 warning
+MODEL_SERVICE_DEPENDENCY = Depends(get_model_service)  # noqa: B008
+
 
 @router.get("/stats", response_model=ModelStatsResponse)
 async def get_model_stats(
-    service: ModelService = Depends(get_model_service),  # noqa: B008
+    service: ModelService = MODEL_SERVICE_DEPENDENCY,
 ):
     """
     Get model performance statistics and metadata.
@@ -34,7 +31,9 @@ async def get_model_stats(
 
 
 @router.post("/reload", response_model=ModelReloadResponse)
-async def reload_model():
+async def reload_model(
+    service: ModelService = MODEL_SERVICE_DEPENDENCY,
+):
     """
     Reload the model from disk.
 
@@ -42,7 +41,7 @@ async def reload_model():
     the updated version without restarting the server.
     """
     try:
-        success = reload_model_service()
+        success = service.reload_model()
 
         if success:
             return ModelReloadResponse(
@@ -59,7 +58,7 @@ async def reload_model():
 
 @router.get("/features", response_model=List[str])
 async def get_model_features(
-    service: ModelService = Depends(get_model_service),  # noqa: B008
+    service: ModelService = MODEL_SERVICE_DEPENDENCY,
 ):
     """
     Get the list of features used by the model.

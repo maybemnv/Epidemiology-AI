@@ -6,6 +6,9 @@ Provides business logic for outbreak predictions and model management.
 
 from typing import Dict, Any, List, Optional
 from .predictor import OutbreakPredictor
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ModelService:
@@ -26,8 +29,18 @@ class ModelService:
         """Initialize the predictor"""
         try:
             self.predictor = OutbreakPredictor(self.model_path)
+            if not self.predictor.is_loaded():
+                logger.warning(
+                    f"Model at {self.model_path} could not be loaded "
+                    f"during initialization."
+                )
+                self.predictor = None
+            else:
+                logger.info(f"Model from {self.model_path} loaded successfully.")
         except Exception as e:
-            print(f"⚠ Failed to initialize model: {e}")
+            logger.error(
+                f"Failed to initialize model from {self.model_path}: {e}", exc_info=True
+            )
             self.predictor = None
 
     def is_model_loaded(self) -> bool:
@@ -79,7 +92,14 @@ class ModelService:
         """Reload the model from disk"""
         try:
             self._initialize_model()
-            return self.is_model_loaded()
+            if self.is_model_loaded():
+                logger.info("Model reloaded successfully.")
+                return True
+            else:
+                logger.error(
+                    "Model reload failed: Model is still not loaded after attempt."
+                )
+                return False
         except Exception as e:
-            print(f"✗ Failed to reload model: {e}")
+            logger.error(f"Failed to reload model: {e}", exc_info=True)
             return False

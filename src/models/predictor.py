@@ -9,6 +9,9 @@ import numpy as np
 import pandas as pd
 from typing import Dict, Any, List
 from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class OutbreakPredictor:
@@ -36,7 +39,7 @@ class OutbreakPredictor:
         try:
             model_file = Path(self.model_path)
             if not model_file.exists():
-                print(f"⚠ Model file not found: {self.model_path}")
+                logger.warning(f"Model file not found: {self.model_path}")
                 return False
 
             with open(self.model_path, "rb") as f:
@@ -52,10 +55,12 @@ class OutbreakPredictor:
             return True
 
         except FileNotFoundError:
-            print(f"⚠ Model file not found: {self.model_path}")
+            logger.warning(f"Model file not found: {self.model_path}")
             return False
         except Exception as e:
-            print(f"✗ Error loading model: {e}")
+            logger.error(
+                f"Error loading model from {self.model_path}: {e}", exc_info=True
+            )
             return False
 
     def is_loaded(self) -> bool:
@@ -93,13 +98,17 @@ class OutbreakPredictor:
             "cases_lag_2": float(cases[2]),
             "cases_lag_3": float(cases[1]),
             "cases_lag_4": float(cases[0]),
-            # Rolling averages (simplified)
-            "temp_avg_roll_2w": temp_avg,
-            "temp_avg_roll_4w": temp_avg,
-            "precip_roll_2w": precipitation_mm,
-            "precip_roll_4w": precipitation_mm,
-            "humidity_roll_2w": humidity_percent,
-            "humidity_roll_4w": humidity_percent,
+            # Simplified 'rolling' features for weather (current week's value)
+            # NOTE: These are NOT true rolling averages. This is a temporary compromise
+            # for consistency with the training notebook due to stateless API design.
+            # True rolling averages would require historical context at inference time,
+            # a feature for future improvement.
+            "current_temp_avg_for_roll_2w": temp_avg,
+            "current_temp_avg_for_roll_4w": temp_avg,
+            "current_precip_for_roll_2w": precipitation_mm,
+            "current_precip_for_roll_4w": precipitation_mm,
+            "current_humidity_for_roll_2w": humidity_percent,
+            "current_humidity_for_roll_4w": humidity_percent,
             # Seasonal encoding
             "week_sin": np.sin(2 * np.pi * weekofyear / 52),
             "week_cos": np.cos(2 * np.pi * weekofyear / 52),

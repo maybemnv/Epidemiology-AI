@@ -4,7 +4,7 @@ Pydantic Schemas for API Request/Response Models
 All data models are defined here for consistency and reusability.
 """
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from typing import List, Optional, Dict
 from datetime import datetime
 
@@ -31,8 +31,8 @@ class PredictionRequest(BaseModel):
         description="Case counts from previous 1-4 weeks",
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "temp_avg": 27.5,
                 "temp_min": 22.0,
@@ -43,6 +43,7 @@ class PredictionRequest(BaseModel):
                 "previous_cases": [12, 15, 18, 22],
             }
         }
+    )
 
 
 class PredictionResponse(BaseModel):
@@ -150,8 +151,7 @@ class User(UserBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Token(BaseModel):

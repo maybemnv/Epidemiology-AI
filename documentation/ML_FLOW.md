@@ -15,8 +15,8 @@ This document outlines the machine learning flow and workflow for the Epidemiolo
 ### 2. Feature Engineering
 
 - **Temporal Features**: Week of year, seasonal encoding (sin/cos), lag features
-- **Weather Features**: Temperature (avg, min, max), precipitation, humidity, rolling averages
-- **Historical Features**: Previous case counts (lag 1-4 weeks), rolling averages
+- **Weather Features**: Temperature (avg, min, max), precipitation, humidity, simplified "rolling averages" (see DATASET.md for details)
+- **Historical Features**: Previous case counts (lag 1-4 weeks), simplified "rolling averages" (see DATASET.md for details)
 - **Environmental Features**: NDVI (Normalized Difference Vegetation Index), dew point, humidity
 
 ### 3. Model Training Pipeline

@@ -1,211 +1,131 @@
-# Epidemiology AI - Detailed Implementation Tasks
+# Epidemiology AI - Master Project Plan
 
-This document outlines the actionable tasks required to fully operationalize the Epidemiology AI project. It is based on the comprehensive documentation provided and structured to guide development from setup to production deployment.
-
-## 0. Prerequisites & Environment Setup
-
-**Goal:** Ensure the development environment is ready for all team members.
-
-- [x] **System Requirements Verification**
-  - [x] Install Python 3.11+
-  - [x] Install Node.js (v18+) and npm/pnpm
-  - [x] Install Docker and Docker Compose
-  - [x] Install PostgreSQL (v14+) and TimescaleDB extension
-  - [x] Install Git
-- [x] **Repository Setup**
-  - [x] Initialize Git repository (if not done)
-  - [x] Configure `.gitignore` for Python, Node, and environment files
-  - [x] Set up pre-commit hooks (black, flake8, eslint, prettier)
-- [x] **Python Environment**
-  - [x] Create virtual environment: `python -m venv .venv`
-  - [x] Activate environment
-  - [x] Install dependencies: `pip install -r requirements.txt`
-  - [x] Configure `pyproject.toml` for tool settings
-- [x] **Frontend Environment**
-  - [x] Initialize React project: `npm create vite@latest frontend -- --template react-ts`
-  - [x] Install dependencies: `npm install` (in frontend dir)
-  - [x] Setup ESLint and Prettier
-- [x] **Configuration Management**
-  - [x] Create `.env` file from `.env.example`
-  - [x] Define environment variables:
-    - `DATABASE_URL`
-    - `SECRET_KEY`
-    - `ENVIRONMENT` (dev/prod)
-    - `API_KEYS` (External services)
+## Mission: To architect, build, and deploy a production-grade, AI-powered early warning system for disease outbreaks, showcasing cutting-edge MLOps, data engineering, and full-stack development practices.
 
 ---
 
-## Phase 1: Core Infrastructure & Database
+### **Phase 0: Foundation & Environment Setup (Weeks 1-2)**
 
-**Goal:** Establish the foundational backend and storage systems.
+**Goal:** Establish a rock-solid, professional-grade development environment.
 
-- [x] **Database Design & Implementation** (Ref: `backend_architecture.md`)
-  - [x] **Core Tables**: Create migrations (using Alembic or SQL) for:
-    - `users` (Auth & RBAC)
-    - `diseases` (Metadata)
-    - `geographic_regions` (Locations)
-  - [x] **Data Tables**: Implement schemas for:
-    - `outbreak_data` (Time-series cases)
-    - `environmental_data` (Weather/Climate)
-    - `digital_signals` (Search trends, social)
-  - [x] **Analysis Tables**:
-    - `predictions` (Model outputs)
-    - `alerts` (Generated notifications)
-    - `model_versions` (ML Ops)
-  - [x] **Setup TimescaleDB** hypertables for `outbreak_data` and `environmental_data`.
-- [x] **Backend Framework Initi alization**
-  - [x] Setup FastAPI application structure (`src/main.py`, `src/api/`, `src/core/`).
-  - [x] Configure CORS middleware.
-  - [ ] Implement database connection pooling (SQLAlchemy + AsyncPG).
-  - [x] Create Global Exception Handlers.
-- [x] **Authentication Module**
-  - [x] Implement `POST /api/v1/auth/register`
-  - [x] Implement `POST /api/v1/auth/login` (JWT generation)
-  - [x] Implement `POST /api/v1/auth/refresh`
-  - [x] Create `get_current_user` dependency for protected routes.
+- [x] **System & Tooling Verification**
+  - [x] Install Python 3.11+, Node.js v18+, Docker, PostgreSQL 14+, and Git.
+- [x] **Repository & CI/CD Setup**
+  - [x] Initialize Git repository with a professional README.
+  - [x] Configure `.gitignore` and `.dockerignore` for Python, Node, and IDE artifacts.
+  - [x] **Implement Pre-commit Hooks:** Enforce code quality automatically using `black`, `flake8`, `isort`.
+- [x] **Backend Environment (Python)**
+  - [x] Create and activate a virtual environment (`.venv`).
+  - [x] Lock dependencies using `pip freeze > requirements.txt`.
+  - [x] Configure `pyproject.toml` to manage formatter and linter settings.
+- [x] **Frontend Environment (React)**
+  - [x] Initialize a Vite-based React + TypeScript project in `/frontend`.
+  - [x] Install and configure ESLint and Prettier for consistent code style.
+- [x] **Configuration & Secrets Management**
+  - [x] Create a `.env.example` file for environment variable schema.
+  - [x] Load secrets securely using `python-dotenv`; never commit the `.env` file.
 
 ---
 
-## Phase 2: Data Engineering & Ingestion
+### **Phase 1: Core Infrastructure & Database (Weeks 3-5)**
 
-**Goal:** Build pipelines to acquire, clean, and store data.
+**Goal:** Build the skeletal structure of the backend, including the database and core API services.
 
-- [ ] **Data Ingestion Service**
-  - [ ] **Weather Data Module**:
-    - [ ] Client for NOAA/OpenWeatherMap API.
-    - [ ] Job to fetch historical data for target regions.
-    - [ ] Scheduler for daily weather updates.
-  - [ ] **Disease Data Module**:
-    - [ ] Importers for CSV datasets (DrivenData/Kaggle).
-    - [ ] Scrapers/API clients for government health bulletins (where applicable).
-  - [ ] **Digital Signals Module**:
-    - [ ] Integration with `pytrends` for Google Trends data.
-- [ ] **ETL Pipeline**
-  - [ ] **Cleaning**: Handle missing values (forward/backward fill), detect outliers.
-  - [ ] **Normalization**: Standardize units (Kelvin to Celsius, dates to ISO8601).
-  - [ ] **Validation**: Pydantic models to validate incoming data schema.
-  - [ ] **Loading**: Bulk insert functions for high-volume data.
+- [x] **Database Architecture & Implementation**
+  - [x] Design a normalized schema (Ref: `backend_architecture.md`).
+  - [x] **Setup Alembic Migrations:** Manage all future schema changes programmatically.
+  - [x] Create initial migrations for all core, data, and analysis tables (`users`, `outbreak_data`, etc.).
+  - [x] **Enable TimescaleDB:** Convert `outbreak_data` and `environmental_data` to hypertables for time-series performance.
+- [x] **API Framework Initialization**
+  - [x] Setup a modular FastAPI application structure (`/src/api`, `/src/core`, `/src/models`).
+  - [x] Implement robust SQLAlchemy `database.py` with an async connection engine.
+  - [x] Configure CORS middleware and global exception handlers for clean error responses.
+- [ ] **Authentication & Authorization Service**
+  - [ ] Implement JWT-based authentication: `login`, `register`, and `refresh` endpoints.
+  - [ ] Develop a role-based access control (RBAC) dependency for securing admin-only endpoints.
 
 ---
 
-## Phase 3: Machine Learning Module
+### **Phase 2: Data Engineering & ETL Pipeline (Weeks 4-6)**
 
-**Goal:** Develop, train, and serve the predictive models. (Ref: `ML_FLOW.md`)
+**Goal:** Build an automated and reliable data pipeline.
 
-- [x] **Feature Engineering**
-  - [x] Implement **Temporal Features**: `weekofyear`, `season`, `sin/cos` time encoding.
-  - [x] Implement **Lag Features**: `cases_lag_1` to `cases_lag_4`.
-  - [x] Implement **Rolling Stats**: 2-week/4-week moving averages for temp/precip.
-  - [x] Implement **Vegetation Indices**: Integration of NDVI data.
-- [x] **Model Development**
-  - [x] **Baseline Model**: Train Random Forest Regressor on historical data.
-  - [x] **Advanced Model**: Train XGBoost Regressor with hyperparameter tuning.
-  - [x] **Evaluation**: Calculate R², MAE, RMSE. Define "Outbreak Threshold" (e.g., 75th percentile).
-  - [x] **Serialization**: Save trained models to `models/` directory using `pickle` or `joblib`.
-- [x] **Model Serving Service** (`src/models/`)
-  - [x] `Predictor` class to load model and run inference.
-  - [x] Feature construction from API request payload.
-  - [x] Risk Level classification logic (Low/Medium/High).
-  - [x] Confidence score calculation.
-- [x] **ML API Endpoints**
-  - [x] `POST /api/v1/predict`: Real-time prediction endpoint.
-  - [x] `GET /api/v1/model/stats`: Return current model metrics.
-  - [x] `POST /api/v1/model/reload`: Hot-reload model artifacts.
+- [ ] **Automated Data Ingestion Service**
+  - [ ] Develop a modular service in `/src/services/ingestion/`.
+  - [ ] **Weather Module**: Create a client for the NOAA API to fetch data for configured regions.
+  - [ ] **Disease Data Module**: Implement a robust importer for the DrivenData CSVs.
+  - [ ] **Digital Signals Module**: Integrate the `pytrends` library to fetch Google Trends data.
+- [ ] **ETL Workflow & Scheduling**
+  - [ ] **Implement Celery:** Use Celery with Redis for scheduling and running asynchronous data ingestion tasks.
+  - [ ] Create a nightly task to fetch the latest data from all Tier 2 sources.
+  - [ ] Develop a robust ETL pipeline that cleans, validates (with Pydantic), and normalizes all incoming data before loading it into the database.
 
 ---
 
-## Phase 4: Backend API Development
+### **Phase 3: Machine Learning & MLOps (Weeks 6-10)**
 
-**Goal:** Expose functionality to the frontend via REST API. (Ref: `backend_architecture.md`)
+**Goal:** Develop, train, and serve a highly accurate predictive model with a clear path for operationalization.
 
-- [ ] **Disease Management**
-  - [ ] `GET /api/v1/diseases`: List supported diseases.
-  - [ ] `POST /api/v1/diseases`: Add new disease config (Admin).
-- [ ] **Region Management**
-  - [ ] `GET /api/v1/regions`: GeoJSON/List of monitored areas.
-  - [ ] `GET /api/v1/regions/{id}/stats`: Aggregate stats for a region.
-- [ ] **Analytics & Dashboard Endpoints**
-  - [ ] `GET /api/v1/dashboard/overview`: High-level metrics (Active Alerts, Risk Count).
-  - [ ] `GET /api/v1/analytics/trends`: Time-series data for charting (cases vs. prediction).
-  - [ ] `GET /api/v1/dashboard/map-data`: Geospatial risk heatmap data.
-- [ ] **Alert Management**
-  - [ ] `GET /api/v1/alerts`: Filterable list of alerts.
-  - [ ] `POST /api/v1/alerts/{id}/acknowledge`: Workflow state update.
-  - [ ] `POST /api/v1/alerts/{id}/resolve`: Close alert.
-
----
-
-## Phase 5: Frontend Development
-
-**Goal:** Create an intuitive UI for public health officials. (Ref: `frontend_ux_design.md`)
-
-- [ ] **Project scaffolding**
-  - [ ] Setup Routing (`react-router-dom`).
-  - [ ] Setup State Management (`zustand` or `redux-toolkit`).
-  - [ ] Setup UI Library (MUI/AntD) and Tailwind CSS.
-- [ ] **Authentication UI**
-  - [ ] Login Page.
-  - [ ] Registration Page.
-  - [ ] Protected Route wrapper.
-- [ ] **Dashboard Implementation**
-  - [ ] **Summary Cards**: Active alerts, Prediction accuracy, At-risk regions.
-  - [ ] **Interactive Map**: Leaflet/Mapbox integration showing risk zones.
-  - [ ] **Recent Alerts Widget**: List of high-priority notifications.
-- [ ] **Analytics Views**
-  - [ ] **Trend Analysis**: Line charts (Recharts/Chart.js) comparing Actual vs. Predicted cases.
-  - [ ] **Factor Analysis**: Bar charts showing feature importance (Rainfall vs. Cases).
-- [ ] **Alert Center**
-  - [ ] Data Grid view of all alerts.
-  - [ ] Filtering (Severity, Region, Date).
-  - [ ] Detail view with action buttons (Acknowledge/Resolve).
-- [ ] **Model Performance View**
-  - [ ] Visualization of R²/RMSE over time.
-  - [ ] Confusion matrix for outbreak classification.
+- [x] **Advanced Feature Engineering**
+  - [x] Create a reproducible feature engineering pipeline: Temporal features, lag features, rolling statistics, and vegetation indices.
+- [x] **Model Development & Training**
+  - [x] **Location-Specific Models**: Refactor the training pipeline to produce separate, optimized models for San Juan ('sj') and Iquitos ('iq').
+  - [x] Train baseline (Random Forest) and advanced (XGBoost) models for each location.
+  - [x] **Implement Hyperparameter Tuning:** Use Grid Search or Optuna to find the optimal parameters.
+  - [x] Serialize final model artifacts using `joblib`.
+- [ ] **Model Serving & API**
+  - [x] Implement `Predictor` service that dynamically loads the correct model based on the request's region.
+  - [x] `POST /api/predict`: Live prediction endpoint.
+  - [x] `GET /api/model/stats`: Endpoint to return key metrics for the currently loaded model.
+- [ ] **MLOps - The Professional Edge**
+  - [ ] **Integrate MLflow:**
+    - [ ] Track all training runs, parameters, and metrics automatically.
+    - [ ] Log model artifacts and feature importance plots.
+    - [ ] Create a "champion/challenger" workflow for promoting models.
+  - [ ] **Automate Retraining:** Create a scheduled Celery task to retrain models weekly/monthly on new data and log results to MLflow.
+  - [ ] **Implement Model Monitoring:**
+    - [ ] Persist all predictions and inputs to the `predictions` table.
+    - [ ] Create a service to monitor for **prediction drift** (accuracy degradation over time) and **data drift** (changes in input feature distribution).
+    - [ ] Set up alerts if model performance drops below a predefined threshold.
 
 ---
 
-## Phase 6: Advanced Features & Integration
+### **Phase 4: API & Frontend Integration (Weeks 8-14)**
 
-**Goal:** Add polish and production-ready capabilities.
+**Goal:** Build a polished, data-driven frontend and the backing API endpoints.
 
-- [ ] **Alert Engine** (Backend)
-  - [ ] Scheduled task (Celery/Cron) to run predictions daily.
-  - [ ] Logic to trigger alerts if `predicted_cases > threshold`.
-  - [ ] Email/SMS notification integration (SMTP/Twilio).
-- [ ] **Multi-Disease Support**
-  - [ ] Refactor Predictor to select model based on `disease_id`.
-  - [ ] Train separate models for Dengue, Malaria, etc.
-- [ ] **Reporting**
-  - [ ] PDF Generation endpoint: Automated weekly report.
-  - [ ] CSV Export for raw data.
-
----
-
-## Phase 7: Deployment & Operations
-
-**Goal:** Deploy the system to a stable environment.
-
-- [ ] **Containerization**
-  - [ ] Optimization of `Dockerfile` for Backend (multi-stage build).
-  - [ ] Optimization of `Dockerfile` for Frontend (Nginx build).
-  - [ ] Update `compose.yaml` for production (restart policies, volumes).
-- [ ] **CI/CD Pipeline**
-  - [ ] GitHub Actions workflow for Unit Tests.
-  - [ ] Auto-build and push Docker images.
-- [ ] **Monitoring**
-  - [ ] Integrate Prometheus for metrics scraping.
-  - [ ] Setup Grafana dashboard for system health & ML metrics.
-- [ ] **Documentation**
-  - [ ] API Documentation (Swagger/OpenAPI) - Auto-generated.
-  - [ ] User Manual creation.
-  - [ ] Deployment Guide.
+- [ ] **Backend API Development**
+  - [ ] Build out all analytics and dashboard endpoints (`/dashboard/overview`, `/analytics/trends`, `/dashboard/map-data`).
+  - [ ] Implement a full CRUD API for `Alerts` management, including acknowledgment and resolution.
+- [ ] **Frontend Scaffolding**
+  - [ ] Implement routing (`react-router-dom`), state management (`zustand`), and a UI library (e.g., Material-UI).
+  - [ ] Create a secure API client with `axios` that handles JWT tokens.
+- [ ] **Core UI Implementation**
+  - [ ] **Dashboard:** Build summary cards, an interactive map (Leaflet/Mapbox) showing risk zones, and a real-time alerts widget.
+  - [ ] **Analytics Views:** Implement dynamic line charts (Recharts) for trend analysis and feature importance.
+  - [ ] **Alert Center:** Create a data grid to view, filter, and manage alerts.
+- [ ] **Testing & Quality Assurance**
+  - [ ] **Unit Testing:** Achieve >80% test coverage for the backend using `pytest`.
+  - [ ] **Integration Testing:** Write tests to ensure API endpoints interact correctly with the database.
+  - [ ] **Frontend Testing:** Implement component tests for critical UI elements.
+  - [ ] **Security:** Integrate `safety` and `npm audit` into the CI pipeline to scan for vulnerable dependencies.
 
 ---
 
-## Quality Assurance Checklist
+### **Phase 5: Deployment & Finalization (Weeks 15-18)**
 
-- [ ] **Unit Testing**: Backend (`pytest`) coverage > 80%.
-- [ ] **Integration Testing**: API endpoints functional with DB.
-- [ ] **Frontend Testing**: Critical user flows (Login -> Dashboard -> Alert).
-- [ ] **Security Scan**: Check dependencies for vulnerabilities (`safety`, `npm audit`).
-- [ ] **Performance**: Ensure API response time < 200ms for dashboard data.
+**Goal:** Deploy the application to production and finalize all documentation.
+
+- [ ] **Containerization & Deployment**
+  - [ ] Write optimized, multi-stage `Dockerfile` for both the backend and frontend.
+  - [ ] Create a production-ready `docker-compose.yml` defining all services (API, frontend, DB, Redis, Celery).
+- [ ] **CI/CD Pipeline (GitHub Actions)**
+  - [ ] Create a workflow that automatically runs tests and linters on every pull request.
+  - [ ] On merge to `main`, the workflow should build and push Docker images to a registry (e.g., Docker Hub, GHCR).
+- [ ] **Production Monitoring**
+  - [ ] Integrate Prometheus for scraping application metrics.
+  - [ ] Set up a Grafana dashboard to visualize system health, API latency, and key model performance metrics.
+- [ ] **Final Documentation**
+  - [ ] Ensure the auto-generated FastAPI docs (`/docs`) are clean and comprehensive.
+  - [ ] Write a high-level `README.md` that links to the `DATA_STRATEGY.md` and this `task.md` file.
+  - [ ] Create a `DEPLOYMENT.md` guide explaining how to launch the entire system with Docker Compose.
