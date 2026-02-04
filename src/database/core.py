@@ -21,9 +21,11 @@ if not DATABASE_URL:
 engine = create_async_engine(
     DATABASE_URL,
     echo=False,  # Set to True for SQL logging
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
+    pool_pre_ping=True,  # Test connections before use
+    pool_size=20,  # Base pool size
+    max_overflow=10,  # Additional connections beyond pool_size
+    pool_timeout=30,  # Seconds to wait for connection
+    pool_recycle=1800,  # Recycle connections after 30 minutes
 )
 
 # Session Factory
