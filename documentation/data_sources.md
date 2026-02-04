@@ -3,6 +3,7 @@
 ## 1. Epidemiological Data Sources
 
 ### 1.1 Government Health Databases
+
 - **Integrated Disease Surveillance Programme (IDSP) - India**
   - URL: https://idsp.nic.in/
   - Description: Weekly disease surveillance data for various communicable diseases
@@ -33,6 +34,7 @@
   - Format: JSON, CSV, Excel
 
 ### 1.2 International Organizations
+
 - **European Centre for Disease Prevention and Control (ECDC)**
   - URL: https://www.ecdc.europa.eu/en/data
   - Data Types: European disease surveillance
@@ -46,6 +48,7 @@
 ## 2. Climate & Environmental Data Sources
 
 ### 2.1 Weather Services
+
 - **Indian Meteorological Department (IMD)**
   - URL: https://www.imd.gov.in/
   - Data Types: Temperature, rainfall, humidity, weather patterns
@@ -67,6 +70,7 @@
   - Rate Limits: 60 calls/minute for free tier
 
 ### 2.2 Satellite & Environmental Data
+
 - **NASA Earthdata**
   - URL: https://earthdata.nasa.gov/
   - Data Types: Satellite imagery, vegetation indices, precipitation
@@ -76,6 +80,7 @@
 ## 3. Digital Surveillance Data Sources
 
 ### 3.1 Search Trends
+
 - **Google Trends API**
   - URL: https://trends.google.com/trends/
   - Data Types: Search interest for specific terms over time
@@ -90,6 +95,7 @@
   - Use Case: Historical disease trend data
 
 ### 3.2 Social Media Data
+
 - **Twitter API**
   - URL: https://developer.twitter.com/en/docs/twitter-api
   - Data Types: Tweets mentioning health-related terms
@@ -106,6 +112,7 @@
 ## 4. Healthcare & Medical Data Sources
 
 ### 4.1 Hospital & Clinical Data
+
 - **OpenFDA API**
   - URL: https://open.fda.gov/
   - Data Types: Adverse events, drug recalls, food safety
@@ -120,9 +127,10 @@
   - Use Case: Track increases in medications for specific symptoms
 
 ### 4.2 Research & Academic Datasets
+
 - **Kaggle Datasets**
   - URL: https://www.kaggle.com/datasets
-  - Examples: 
+  - Examples:
     - Dengue Fever Prediction (for modeling)
     - COVID-19 datasets
     - Influenza surveillance data
@@ -137,6 +145,7 @@
 ## 5. Mobility & Transportation Data
 
 ### 5.1 Travel & Movement Patterns
+
 - **Google Mobility Reports**
   - URL: https://www.google.com/covid19/mobility/
   - Data Types: Movement trends in different categories
@@ -152,6 +161,7 @@
 ## 6. Demographic & Geographic Data
 
 ### 6.1 Population Data
+
 - **World Bank Open Data**
   - URL: https://data.worldbank.org/
   - Data Types: Population density, demographics, socioeconomic indicators
@@ -166,18 +176,21 @@
 ## 7. Technical Implementation Guidelines
 
 ### 7.1 API Access Patterns
+
 - **Rate Limiting**: Implement exponential backoff for API calls
 - **Caching**: Cache API responses to reduce calls and improve performance
 - **Error Handling**: Handle API failures gracefully with retries
 - **Authentication**: Manage API keys securely using environment variables
 
 ### 7.2 Data Processing Guidelines
+
 - **Normalization**: Standardize data formats from different sources
 - **Validation**: Implement data quality checks
 - **Updating**: Regularly refresh data to ensure current information
 - **Storage**: Design efficient storage based on data characteristics
 
 ### 7.3 Data Privacy & Compliance
+
 - **HIPAA Compliance**: Ensure handling of health data follows regulations
 - **GDPR Compliance**: Respect privacy regulations for EU data
 - **Anonymization**: Remove or obfuscate personally identifiable information
@@ -186,12 +199,14 @@
 ## 8. Data Acquisition Strategy
 
 ### 8.1 Priority Data Sources
+
 1. **High Priority**: Government health data (IDSP, MOHFW) - for ground truth
-2. **Medium Priority**: Weather data (IMD, NOAA) - for environmental correlation  
+2. **Medium Priority**: Weather data (IMD, NOAA) - for environmental correlation
 3. **Medium Priority**: Google Trends - for digital surveillance signal
 4. **Lower Priority**: Social media data - for additional signals (with privacy considerations)
 
 ### 8.2 Contingency Plans
+
 - **Simulated Data**: Use synthetic data for development when real data is unavailable
 - **Public Datasets**: Utilize Kaggle and research datasets for model training
 - **Historical Data**: Leverage historical outbreaks for model training

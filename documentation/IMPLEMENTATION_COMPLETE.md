@@ -69,7 +69,7 @@ src/
 
 ### 6. Fixed Model Paths
 
-**Before:** `../data/models/dengue_outbreak_predictor.pkl`  
+**Before:** `../data/models/dengue_outbreak_predictor.pkl`
 **After:** `../models/dengue_outbreak_predictor.pkl`
 
 ✅ Notebook automatically updated to save to correct location
@@ -235,14 +235,12 @@ Epidemiology AI/
 ### What to Show
 
 1. **Working Notebook**
-
    - Load real dengue data
    - Train model
    - Show predictions
    - Display metrics
 
 2. **Live API**
-
    - Start server (impressive startup logs!)
    - Show Swagger UI at `/docs`
    - Make live prediction

@@ -10,18 +10,18 @@ from .schemas import (
     PredictionResponse,
     ModelStatsResponse,
     HealthResponse,
-    RootResponse
+    RootResponse,
 )
 from .dependencies import get_model_service, init_model_service
 
 __all__ = [
-    'health_router',
-    'api_router',
-    'PredictionRequest',
-    'PredictionResponse',
-    'ModelStatsResponse',
-    'HealthResponse',
-    'RootResponse',
-    'get_model_service',
-    'init_model_service'
+    "health_router",
+    "api_router",
+    "PredictionRequest",
+    "PredictionResponse",
+    "ModelStatsResponse",
+    "HealthResponse",
+    "RootResponse",
+    "get_model_service",
+    "init_model_service",
 ]

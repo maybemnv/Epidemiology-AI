@@ -17,11 +17,11 @@ router = APIRouter(prefix="/predict", tags=["Predictions"])
 @router.post("", response_model=PredictionResponse)
 async def predict_outbreak(
     request: PredictionRequest,
-    service: ModelService = Depends(get_model_service)
+    service: ModelService = Depends(get_model_service),  # noqa: B008
 ):
     """
     Predict dengue outbreak risk based on weather and historical data.
-    
+
     **Parameters:**
     - **temp_avg**: Average temperature in Celsius
     - **temp_min**: Minimum temperature in Celsius
@@ -30,7 +30,7 @@ async def predict_outbreak(
     - **humidity_percent**: Relative humidity percentage
     - **weekofyear**: Week number (1-53)
     - **previous_cases**: List of case counts from previous weeks (1-4 weeks)
-    
+
     **Returns:**
     - Predicted case count
     - Risk level (Low/Medium/High)
@@ -40,9 +40,12 @@ async def predict_outbreak(
     if not service.is_model_loaded():
         raise HTTPException(
             status_code=503,
-            detail="Model not loaded. Please train and save a model first by running the notebook."
+            detail=(
+                "Model not loaded. Please train and save a model first "
+                "by running the notebook."
+            ),
         )
-    
+
     try:
         prediction = service.predict_outbreak(
             temp_avg=request.temp_avg,
@@ -51,18 +54,18 @@ async def predict_outbreak(
             precipitation_mm=request.precipitation_mm,
             humidity_percent=request.humidity_percent,
             weekofyear=request.weekofyear,
-            previous_cases=request.previous_cases
+            previous_cases=request.previous_cases,
         )
-        
+
         return PredictionResponse(
-            predicted_cases=prediction['predicted_cases'],
-            risk_level=prediction['risk_level'],
-            confidence=prediction['confidence'],
-            outbreak_threshold=prediction['threshold'],
-            features_used=prediction['features_used'],
-            timestamp=datetime.now()
+            predicted_cases=prediction["predicted_cases"],
+            risk_level=prediction["risk_level"],
+            confidence=prediction["confidence"],
+            outbreak_threshold=prediction["threshold"],
+            features_used=prediction["features_used"],
+            timestamp=datetime.now(),
         )
-    
+
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:

@@ -130,6 +130,6 @@ Check the documentation folder for detailed guides on:
 
 ---
 
-**Built for**: Epidemiology AI Hackathon  
-**Tech Stack**: Python, FastAPI, scikit-learn, XGBoost, React  
+**Built for**: Epidemiology AI Hackathon
+**Tech Stack**: Python, FastAPI, scikit-learn, XGBoost, React
 **Status**: Prototype with full technical design

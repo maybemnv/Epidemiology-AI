@@ -3,6 +3,7 @@
 ## 1. Design Philosophy
 
 ### Core Principles
+
 - **Clarity**: Information must be presented clearly for quick decision-making
 - **Accessibility**: Usable by public health professionals of varying technical skill levels
 - **Responsiveness**: Works well on desktops, tablets, and mobile devices
@@ -10,6 +11,7 @@
 - **Trustworthiness**: Design instills confidence in the data and predictions
 
 ### Visual Design System
+
 - **Color Palette**:
   - Primary: #1976D2 (Professional Blue)
   - Secondary: #009688 (Healthcare Teal)
@@ -27,6 +29,7 @@
 ## 2. User Interface Components
 
 ### 2.1 Dashboard Layout
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ HEADER: Logo | Navigation | User Profile | Notifications│
@@ -52,6 +55,7 @@
 ### 2.2 Key UI Components
 
 #### Header Component
+
 - Application logo and name
 - Main navigation menu
 - User profile dropdown with settings
@@ -59,18 +63,21 @@
 - Search functionality
 
 #### Sidebar Navigation
+
 - Collapsible menu items
 - Icons for quick recognition
 - Current section highlighting
 - Collapsed state preserves menu icons
 
 #### Alert Banner
+
 - Prominent display of critical alerts
 - Color-coded by severity
 - Action button for quick access
 - Dismissible with acknowledge action
 
 #### Dashboard Cards
+
 ```
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │ ACTIVE ALERTS   │  │ AT RISK REGIONS │  │ PREDICTION      │
@@ -83,6 +90,7 @@
 ## 3. Page Designs
 
 ### 3.1 Dashboard Home Page
+
 ```
 TITLE: "Epidemiology Dashboard"
 
@@ -101,6 +109,7 @@ FEATURES:
 ```
 
 ### 3.2 Map Visualization Page
+
 ```
 TITLE: "Geospatial Risk Analysis"
 
@@ -125,6 +134,7 @@ FEATURES:
 ```
 
 ### 3.3 Alert Management Page
+
 ```
 TITLE: "Alert Center"
 
@@ -147,6 +157,7 @@ ALERT CARD:
 ```
 
 ### 3.4 Prediction Analytics Page
+
 ```
 TITLE: "Prediction Models & Analytics"
 
@@ -166,6 +177,7 @@ VISUALIZATIONS:
 ```
 
 ### 3.5 Data Management Page
+
 ```
 TITLE: "Data Sources & Integration"
 
@@ -185,6 +197,7 @@ SECTIONS:
 ## 4. User Experience Flows
 
 ### 4.1 Alert Response Flow
+
 1. User sees critical alert notification
 2. Clicks notification to go to Alert Center
 3. Reviews alert details and impact assessment
@@ -193,6 +206,7 @@ SECTIONS:
 6. Marks alert as resolved with outcome notes
 
 ### 4.2 Outbreak Investigation Flow
+
 1. User identifies high-risk region on map
 2. Drills down to see detailed predictions
 3. Reviews contributing data sources
@@ -201,6 +215,7 @@ SECTIONS:
 6. Tracks intervention effectiveness
 
 ### 4.3 Model Monitoring Flow
+
 1. User accesses Prediction Analytics page
 2. Reviews model performance metrics
 3. Compares different model versions
@@ -211,18 +226,21 @@ SECTIONS:
 ## 5. Responsive Design Considerations
 
 ### Desktop (1200px+)
+
 - Full sidebar navigation
 - Multiple panels visible simultaneously
 - Detailed charts and graphs
 - Advanced filtering options
 
 ### Tablet (768px - 1199px)
+
 - Collapsible sidebar
 - Two-column layout on main pages
 - Touch-optimized controls
 - Reduced information density
 
 ### Mobile (320px - 767px)
+
 - Bottom navigation bar
 - Single-column layout
 - Simplified data displays
@@ -232,18 +250,21 @@ SECTIONS:
 ## 6. Accessibility Features
 
 ### Keyboard Navigation
+
 - Full navigation via keyboard
 - Logical tab order
 - Skip navigation links
 - Focus indicators
 
 ### Screen Reader Support
+
 - Proper ARIA labels
 - Semantic HTML structure
 - Alt text for images/charts
 - Announcements for dynamic content
 
 ### Visual Accessibility
+
 - High contrast ratios
 - Scalable text options
 - Color not used as sole indicator
@@ -252,18 +273,21 @@ SECTIONS:
 ## 7. Interaction Patterns
 
 ### Data Visualization
+
 - Hover tooltips for detailed values
 - Zoom and pan functionality
 - Brushing for time range selection
 - Colorblind-safe palettes
 
 ### Form Interactions
+
 - Real-time validation
 - Clear error messaging
 - Loading states for API calls
 - Undo capabilities where appropriate
 
 ### Alert Management
+
 - One-click actions for common tasks
 - Bulk operations for multiple alerts
 - Undo for accidental actions
@@ -272,18 +296,21 @@ SECTIONS:
 ## 8. Prototype Screenshots (Conceptual)
 
 ### Screen 1: Dashboard Overview
+
 - Summary cards at top
 - Interactive map showing risk levels
 - Recent alerts panel on right
 - Time-series chart for key metrics
 
 ### Screen 2: Detailed Alert View
+
 - Alert details with context
 - Contributing factors visualization
 - Action buttons for response
 - Timeline of related events
 
 ### Screen 3: Data Visualization
+
 - Multiple chart types selector
 - Interactive filtering controls
 - Export functionality

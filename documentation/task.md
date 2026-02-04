@@ -53,16 +53,16 @@ This document outlines the actionable tasks required to fully operationalize the
     - `alerts` (Generated notifications)
     - `model_versions` (ML Ops)
   - [x] **Setup TimescaleDB** hypertables for `outbreak_data` and `environmental_data`.
-- [ ] **Backend Framework Initialization**
+- [x] **Backend Framework Initi alization**
   - [x] Setup FastAPI application structure (`src/main.py`, `src/api/`, `src/core/`).
   - [x] Configure CORS middleware.
   - [ ] Implement database connection pooling (SQLAlchemy + AsyncPG).
-  - [ ] Create Global Exception Handlers.
-- [ ] **Authentication Module**
-  - [ ] Implement `POST /api/v1/auth/register`
-  - [ ] Implement `POST /api/v1/auth/login` (JWT generation)
-  - [ ] Implement `POST /api/v1/auth/refresh`
-  - [ ] Create `get_current_user` dependency for protected routes.
+  - [x] Create Global Exception Handlers.
+- [x] **Authentication Module**
+  - [x] Implement `POST /api/v1/auth/register`
+  - [x] Implement `POST /api/v1/auth/login` (JWT generation)
+  - [x] Implement `POST /api/v1/auth/refresh`
+  - [x] Create `get_current_user` dependency for protected routes.
 
 ---
 

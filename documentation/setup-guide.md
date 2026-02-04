@@ -14,12 +14,10 @@ Complete setup instructions for running the Epidemiology AI project.
 ### Required Software
 
 1. **Python 3.11+**
-
    - Download from: https://www.python.org/downloads/
    - **Important**: Check "Add Python to PATH" during installation
 
 2. **Git** (optional, for version control)
-
    - Download from: https://git-scm.com/downloads
 
 3. **Code Editor** (recommended)

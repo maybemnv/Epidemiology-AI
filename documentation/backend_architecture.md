@@ -5,6 +5,7 @@
 ### 1.1 Core Tables
 
 #### users
+
 ```sql
 id: UUID (Primary Key)
 email: VARCHAR(255) (Unique, Not Null)
@@ -19,6 +20,7 @@ updated_at: TIMESTAMP (Default: now())
 ```
 
 #### diseases
+
 ```sql
 id: UUID (Primary Key)
 name: VARCHAR(100) (Not Null, Unique)
@@ -30,6 +32,7 @@ updated_at: TIMESTAMP (Default: now())
 ```
 
 #### geographic_regions
+
 ```sql
 id: UUID (Primary Key)
 name: VARCHAR(255) (Not Null)
@@ -44,6 +47,7 @@ updated_at: TIMESTAMP (Default: now())
 ```
 
 #### outbreak_data
+
 ```sql
 id: UUID (Primary Key)
 disease_id: UUID (Foreign Key to diseases)
@@ -63,6 +67,7 @@ Index: (region_id, date) - for geographic time-series
 ```
 
 #### environmental_data
+
 ```sql
 id: UUID (Primary Key)
 region_id: UUID (Foreign Key to geographic_regions)
@@ -83,6 +88,7 @@ Index: (date) - for date-based filtering
 ```
 
 #### digital_signals
+
 ```sql
 id: UUID (Primary Key)
 region_id: UUID (Foreign Key to geographic_regions)
@@ -101,6 +107,7 @@ Index: (signal_type, date) - for signal-based analysis
 ```
 
 #### predictions
+
 ```sql
 id: UUID (Primary Key)
 disease_id: UUID (Foreign Key to diseases)
@@ -123,6 +130,7 @@ Index: (prediction_date, risk_level) - for alert filtering
 ```
 
 #### alerts
+
 ```sql
 id: UUID (Primary Key)
 prediction_id: UUID (Foreign Key to predictions)
@@ -147,6 +155,7 @@ Index: (severity, is_resolved, created_at) - for alert management
 ```
 
 #### model_versions
+
 ```sql
 id: UUID (Primary Key)
 model_name: VARCHAR(255) (Not Null)
@@ -168,6 +177,7 @@ Index: (model_name, is_active) - for active model lookup
 ### 1.2 Relationship Tables
 
 #### user_region_access
+
 ```sql
 id: UUID (Primary Key)
 user_id: UUID (Foreign Key to users)
@@ -179,6 +189,7 @@ Unique: (user_id, region_id) - prevent duplicate access
 ```
 
 #### disease_symptoms
+
 ```sql
 id: UUID (Primary Key)
 disease_id: UUID (Foreign Key to diseases)
@@ -194,6 +205,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.1 Authentication Endpoints
 
 #### POST /api/v1/auth/login
+
 - **Description**: User authentication
 - **Request Body**:
   ```json
@@ -216,6 +228,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### POST /api/v1/auth/register
+
 - **Description**: User registration
 - **Request Body**:
   ```json
@@ -229,6 +242,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### POST /api/v1/auth/refresh
+
 - **Description**: Token refresh
 - **Request Body**:
   ```json
@@ -240,6 +254,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.2 Disease Management Endpoints
 
 #### GET /api/v1/diseases
+
 - **Description**: List all diseases
 - **Query Params**:
   - `limit`: number (default: 100)
@@ -265,9 +280,11 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### GET /api/v1/diseases/{disease_id}
+
 - **Description**: Get specific disease details
 
 #### POST /api/v1/diseases
+
 - **Description**: Create new disease (admin only)
 - **Request Body**:
   ```json
@@ -282,6 +299,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.3 Data Ingestion Endpoints
 
 #### POST /api/v1/data/outbreaks
+
 - **Description**: Ingest outbreak data
 - **Request Body**:
   ```json
@@ -297,6 +315,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### POST /api/v1/data/environmental
+
 - **Description**: Ingest environmental data
 - **Request Body**:
   ```json
@@ -311,6 +330,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### POST /api/v1/data/digital-signals
+
 - **Description**: Ingest digital surveillance signals
 - **Request Body**:
   ```json
@@ -329,6 +349,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.4 Prediction & Analytics Endpoints
 
 #### GET /api/v1/predictions
+
 - **Description**: Get predictions with filtering
 - **Query Params**:
   - `disease_id`: string
@@ -355,6 +376,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### POST /api/v1/predictions/generate
+
 - **Description**: Trigger prediction generation
 - **Request Body**:
   ```json
@@ -366,6 +388,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### GET /api/v1/analytics/trends
+
 - **Description**: Get trend analysis
 - **Query Params**:
   - `disease_id`: string (required)
@@ -377,6 +400,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.5 Dashboard & Visualization Endpoints
 
 #### GET /api/v1/dashboard/overview
+
 - **Description**: Get dashboard overview data
 - **Query Params**:
   - `region_id`: string (optional)
@@ -392,6 +416,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### GET /api/v1/dashboard/map-data
+
 - **Description**: Get geospatial data for map visualization
 - **Query Params**:
   - `disease_id`: string
@@ -404,7 +429,7 @@ Index: (disease_id) - for symptom lookup by disease
         "region_id": "string",
         "region_name": "string",
         "latitude": 12.345,
-        "longitude": 67.890,
+        "longitude": 67.89,
         "risk_level": "high",
         "case_count": 15,
         "prediction_score": 0.78
@@ -416,6 +441,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.6 Alert Management Endpoints
 
 #### GET /api/v1/alerts
+
 - **Description**: Get alerts with filtering
 - **Query Params**:
   - `region_id`: string
@@ -425,6 +451,7 @@ Index: (disease_id) - for symptom lookup by disease
   - `assigned_to`: string (user_id)
 
 #### POST /api/v1/alerts/{alert_id}/acknowledge
+
 - **Description**: Acknowledge an alert
 - **Request Body**:
   ```json
@@ -434,6 +461,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### POST /api/v1/alerts/{alert_id}/resolve
+
 - **Description**: Mark an alert as resolved
 - **Request Body**:
   ```json
@@ -446,6 +474,7 @@ Index: (disease_id) - for symptom lookup by disease
 ### 2.7 Administrative Endpoints
 
 #### GET /api/v1/admin/system-status
+
 - **Description**: Get system health status
 - **Response**:
   ```json
@@ -463,6 +492,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 #### GET /api/v1/admin/model-performance
+
 - **Description**: Get model performance metrics
 - **Query Params**:
   - `model_name`: string
@@ -472,6 +502,7 @@ Index: (disease_id) - for symptom lookup by disease
 ## 3. API Design Principles
 
 ### 3.1 Security
+
 - All endpoints require authentication except health checks
 - Role-based access control (RBAC) for sensitive operations
 - Input validation and sanitization
@@ -479,12 +510,14 @@ Index: (disease_id) - for symptom lookup by disease
 - HTTPS enforcement
 
 ### 3.2 Performance
+
 - Pagination for all list endpoints
 - Caching for frequently accessed data
 - Asynchronous processing for heavy operations
 - Query optimization with proper indexing
 
 ### 3.3 Error Handling
+
 - Consistent error response format:
   ```json
   {
@@ -497,6 +530,7 @@ Index: (disease_id) - for symptom lookup by disease
   ```
 
 ### 3.4 Versioning
+
 - API versioning in URL path (e.g., /api/v1/)
 - Backward compatibility maintained when possible
 - Deprecation notices for deprecated endpoints
@@ -504,12 +538,14 @@ Index: (disease_id) - for symptom lookup by disease
 ## 4. Data Flow Architecture
 
 ### 4.1 Ingestion Flow
+
 1. External data sources push to ingestion endpoints
 2. Data validation and cleaning in real-time
 3. Storage in appropriate tables
 4. Trigger analytics and prediction jobs
 
 ### 4.2 Prediction Flow
+
 1. Scheduled or triggered prediction jobs
 2. Feature extraction from historical data
 3. Model inference using active models
@@ -517,6 +553,7 @@ Index: (disease_id) - for symptom lookup by disease
 5. Dashboard update with new predictions
 
 ### 4.3 Alerting Flow
+
 1. Prediction models identify high-risk scenarios
 2. Automatic alert generation based on thresholds
 3. Notification to relevant users

@@ -3,6 +3,7 @@
 ## Central Topic: Disease Outbreak Early Warning System
 
 ### Core Functionality
+
 - Real-time data collection
 - Outbreak prediction
 - Risk assessment
@@ -10,6 +11,7 @@
 - Dashboard visualization
 
 ### Data Sources
+
 - Epidemiological Data
   - Case reports
   - Hospital admissions
@@ -32,6 +34,7 @@
   - Population density
 
 ### Technical Components
+
 - Data Ingestion Pipeline
 - Data Processing & Cleaning
 - ML Model Training
@@ -42,6 +45,7 @@
 - Database Layer
 
 ### ML/AI Models
+
 - Time Series Forecasting
   - ARIMA
   - Prophet
@@ -55,6 +59,7 @@
   - Logistic Regression
 
 ### Features
+
 - Predictive Analytics
 - Historical Analysis
 - Geospatial Mapping
@@ -65,6 +70,7 @@
 - Multi-disease Support
 
 ### Architecture
+
 - Frontend: React/TypeScript
 - Backend: FastAPI (Python)
 - Database: PostgreSQL/Redis
@@ -73,6 +79,7 @@
 - Data Visualization: D3.js, Leaflet
 
 ### Stakeholders
+
 - Public Health Officials
 - Government Agencies
 - Epidemiologists
@@ -81,6 +88,7 @@
 - Emergency Responders
 
 ### Outcomes
+
 - Faster outbreak detection
 - Reduced response time
 - Prevented disease spread

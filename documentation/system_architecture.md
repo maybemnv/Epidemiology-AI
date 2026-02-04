@@ -145,3 +145,4 @@
 - CDN for frontend assets
 - Caching strategies
 - Load balancing across multiple instances
+```

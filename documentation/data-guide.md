@@ -79,7 +79,6 @@ The project requires multiple data sources to build an effective outbreak predic
 
 - **URL**: https://trends.google.com/trends
 - **How to use**:
-
   1. Search for terms like "dengue fever symptoms", "mosquito bites", "fever clinic"
   2. Set location (e.g., India, specific state)
   3. Download CSV for desired time period
@@ -128,7 +127,6 @@ For immediate prototyping, use the DrivenData dengue dataset:
 1. **Visit**: https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/data/
 
 2. **Download these files**:
-
    - `dengue_features_train.csv` - Weather and vegetation data
    - `dengue_labels_train.csv` - Dengue case counts
 

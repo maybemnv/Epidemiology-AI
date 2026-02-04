@@ -15,7 +15,9 @@ router = APIRouter(tags=["Health"])
 
 
 @router.get("/", response_model=RootResponse)
-async def root(service: ModelService = Depends(get_model_service)):
+async def root(
+    service: ModelService = Depends(get_model_service),  # noqa: B008
+):
     """
     Root endpoint - API information and available endpoints
     """
@@ -29,21 +31,27 @@ async def root(service: ModelService = Depends(get_model_service)):
             "health": "/health",
             "predict": "/api/v1/predict",
             "model_stats": "/api/v1/model/stats",
-            "model_reload": "/api/v1/model/reload"
-        }
+            "model_reload": "/api/v1/model/reload",
+        },
     )
 
 
 @router.get("/health", response_model=HealthResponse)
-async def health_check(service: ModelService = Depends(get_model_service)):
+async def health_check(
+    service: ModelService = Depends(get_model_service),  # noqa: B008
+):
     """
     Health check endpoint for monitoring and load balancers
     """
     model_loaded = service.is_model_loaded()
-    
+
     return HealthResponse(
         status="healthy" if model_loaded else "degraded",
         timestamp=datetime.now(),
         model_status="loaded" if model_loaded else "not_loaded",
-        message="All systems operational" if model_loaded else "Model not loaded - predictions unavailable"
+        message=(
+            "All systems operational"
+            if model_loaded
+            else "Model not loaded - predictions unavailable"
+        ),
     )
