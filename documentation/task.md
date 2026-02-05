@@ -1,10 +1,8 @@
 # Epidemiology AI - Master Project Plan
 
-## Mission: To architect, build, and deploy a production-grade, AI-powered early warning system for disease outbreaks, showcasing cutting-edge MLOps, data engineering, and full-stack development practices.
+## This document outlines the actionable tasks required to fully operationalize the Epidemiology AI project. It is based on the comprehensive documentation provided and structured to guide development from setup to production deployment.
 
----
-
-### **Phase 0: Foundation & Environment Setup (Weeks 1-2)**
+### Phase 0: Foundation & Environment Setup
 
 **Goal:** Establish a rock-solid, professional-grade development environment.
 
@@ -27,7 +25,7 @@
 
 ---
 
-### **Phase 1: Core Infrastructure & Database (Weeks 3-5)**
+### Phase 1: Core Infrastructure & Database
 
 **Goal:** Build the skeletal structure of the backend, including the database and core API services.
 
@@ -40,13 +38,13 @@
   - [x] Setup a modular FastAPI application structure (`/src/api`, `/src/core`, `/src/models`).
   - [x] Implement robust SQLAlchemy `database.py` with an async connection engine.
   - [x] Configure CORS middleware and global exception handlers for clean error responses.
-- [ ] **Authentication & Authorization Service**
-  - [ ] Implement JWT-based authentication: `login`, `register`, and `refresh` endpoints.
-  - [ ] Develop a role-based access control (RBAC) dependency for securing admin-only endpoints.
+- [x] **Authentication & Authorization Service**
+  - [x] Implement JWT-based authentication: `login`, `register`, and `refresh` endpoints.
+  - [x] Develop a role-based access control (RBAC) dependency for securing admin-only endpoints.
 
 ---
 
-### **Phase 2: Data Engineering & ETL Pipeline (Weeks 4-6)**
+### \*\*Phase 2: Data Engineering & ETL Pipeline
 
 **Goal:** Build an automated and reliable data pipeline.
 
@@ -59,10 +57,14 @@
   - [ ] **Implement Celery:** Use Celery with Redis for scheduling and running asynchronous data ingestion tasks.
   - [ ] Create a nightly task to fetch the latest data from all Tier 2 sources.
   - [ ] Develop a robust ETL pipeline that cleans, validates (with Pydantic), and normalizes all incoming data before loading it into the database.
+  - [ ] **Cleaning**: Handle missing values (forward/backward fill), detect outliers.
+  - [ ] **Normalization**: Standardize units (Kelvin to Celsius, dates to ISO8601).
+  - [ ] **Validation**: Pydantic models to validate incoming data schema.
+  - [ ] **Loading**: Bulk insert functions for high-volume data.
 
 ---
 
-### **Phase 3: Machine Learning & MLOps (Weeks 6-10)**
+### Phase 3: Machine Learning & MLOps
 
 **Goal:** Develop, train, and serve a highly accurate predictive model with a clear path for operationalization.
 
@@ -90,29 +92,71 @@
 
 ---
 
-### **Phase 4: API & Frontend Integration (Weeks 8-14)**
+### Phase 4: API & Frontend Integration
 
 **Goal:** Build a polished, data-driven frontend and the backing API endpoints.
 
 - [ ] **Backend API Development**
-  - [ ] Build out all analytics and dashboard endpoints (`/dashboard/overview`, `/analytics/trends`, `/dashboard/map-data`).
+  - [ ] **Disease Management**
+  - [ ] `GET /api/v1/diseases`: List supported diseases.
+  - [ ] `POST /api/v1/diseases`: Add new disease config (Admin).
+- [ ] **Region Management**
+  - [ ] `GET /api/v1/regions`: GeoJSON/List of monitored areas.
+  - [ ] `GET /api/v1/regions/{id}/stats`: Aggregate stats for a region.
+- [ ] **Analytics & Dashboard Endpoints**
+  - [ ] `GET /api/v1/dashboard/overview`: High-level metrics (Active Alerts, Risk Count).
+  - [ ] `GET /api/v1/analytics/trends`: Time-series data for charting (cases vs. prediction).
+  - [ ] `GET /api/v1/dashboard/map-data`: Geospatial risk heatmap data.
   - [ ] Implement a full CRUD API for `Alerts` management, including acknowledgment and resolution.
 - [ ] **Frontend Scaffolding**
   - [ ] Implement routing (`react-router-dom`), state management (`zustand`), and a UI library (e.g., Material-UI).
   - [ ] Create a secure API client with `axios` that handles JWT tokens.
-- [ ] **Core UI Implementation**
-  - [ ] **Dashboard:** Build summary cards, an interactive map (Leaflet/Mapbox) showing risk zones, and a real-time alerts widget.
-  - [ ] **Analytics Views:** Implement dynamic line charts (Recharts) for trend analysis and feature importance.
-  - [ ] **Alert Center:** Create a data grid to view, filter, and manage alerts.
-- [ ] **Testing & Quality Assurance**
-  - [ ] **Unit Testing:** Achieve >80% test coverage for the backend using `pytest`.
-  - [ ] **Integration Testing:** Write tests to ensure API endpoints interact correctly with the database.
-  - [ ] **Frontend Testing:** Implement component tests for critical UI elements.
-  - [ ] **Security:** Integrate `safety` and `npm audit` into the CI pipeline to scan for vulnerable dependencies.
+
+  ## Phase 6: Advanced Features & Integration
+
+**Goal:** Add polish and production-ready capabilities.
+
+- [ ] **Alert Engine** (Backend)
+  - [ ] Scheduled task (Celery/Cron) to run predictions daily.
+  - [ ] Logic to trigger alerts if `predicted_cases > threshold`.
+  - [ ] Email/SMS notification integration (SMTP/Twilio).
+- [ ] **Multi-Disease Support**
+  - [ ] Refactor Predictor to select model based on `disease_id`.
+  - [ ] Train separate models for Dengue, Malaria, etc.
+- [ ] **Reporting**
+  - [ ] PDF Generation endpoint: Automated weekly report.
+  - [ ] CSV Export for raw data.
+
+## Phase 5: Frontend Development
+
+**Goal:** Create an intuitive UI for public health officials. (Ref: `frontend_ux_design.md`)
+
+- [ ] **Project scaffolding**
+  - [ ] Setup Routing (`react-router-dom`).
+  - [ ] Setup State Management (`zustand` or `redux-toolkit`).
+  - [ ] Setup UI Library (MUI/AntD) and Tailwind CSS.
+- [ ] **Authentication UI**
+  - [ ] Login Page.
+  - [ ] Registration Page.
+  - [ ] Protected Route wrapper.
+- [ ] **Dashboard Implementation**
+  - [ ] **Summary Cards**: Active alerts, Prediction accuracy, At-risk regions.
+  - [ ] **Interactive Map**: Leaflet/Mapbox integration showing risk zones.
+  - [ ] **Recent Alerts Widget**: List of high-priority notifications.
+- [ ] **Analytics Views**
+  - [ ] **Trend Analysis**: Line charts (Recharts/Chart.js) comparing Actual vs. Predicted cases.
+  - [ ] **Factor Analysis**: Bar charts showing feature importance (Rainfall vs. Cases).
+- [ ] **Alert Center**
+  - [ ] Data Grid view of all alerts.
+  - [ ] Filtering (Severity, Region, Date).
+  - [ ] Detail view with action buttons (Acknowledge/Resolve).
+- [ ] **Model Performance View**
+  - [ ] Visualization of R²/RMSE over time.
+  - [ ] Confusion matrix for outbreak classification.
 
 ---
 
-### **Phase 5: Deployment & Finalization (Weeks 15-18)**
+### Phase 5: Deployment & Finalization
 
 **Goal:** Deploy the application to production and finalize all documentation.
 
@@ -129,3 +173,8 @@
   - [ ] Ensure the auto-generated FastAPI docs (`/docs`) are clean and comprehensive.
   - [ ] Write a high-level `README.md` that links to the `DATA_STRATEGY.md` and this `task.md` file.
   - [ ] Create a `DEPLOYMENT.md` guide explaining how to launch the entire system with Docker Compose.
+- [ ] **Unit Testing**: Backend (`pytest`) coverage > 80%.
+- [ ] **Integration Testing**: API endpoints functional with DB.
+- [ ] **Frontend Testing**: Critical user flows (Login -> Dashboard -> Alert).
+- [ ] **Security Scan**: Check dependencies for vulnerabilities (`safety`, `npm audit`).
+- [ ] **Performance**: Ensure API response time < 200ms for dashboard data.
