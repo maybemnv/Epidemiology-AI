@@ -156,7 +156,7 @@
 
 ---
 
-### Phase 5: Deployment & Finalization
+### Phase 6: Deployment & Finalization
 
 **Goal:** Deploy the application to production and finalize all documentation.
 
@@ -165,7 +165,7 @@
   - [ ] Create a production-ready `docker-compose.yml` defining all services (API, frontend, DB, Redis, Celery).
 - [ ] **CI/CD Pipeline (GitHub Actions)**
   - [ ] Create a workflow that automatically runs tests and linters on every pull request.
-  - [ ] On merge to `main`, the workflow should build and push Docker images to a registry (e.g., Docker Hub, GHCR).
+  - [ ] On merge to `master`, the workflow should build and push Docker images to a registry (e.g., Docker Hub, GHCR).
 - [ ] **Production Monitoring**
   - [ ] Integrate Prometheus for scraping application metrics.
   - [ ] Set up a Grafana dashboard to visualize system health, API latency, and key model performance metrics.
