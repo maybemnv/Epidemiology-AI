@@ -135,6 +135,22 @@ class EnvironmentalData(Base):
     )
 
 
+class DigitalSignal(Base):
+    """Digital signals data (Google Trends, social media)"""
+
+    __tablename__ = "digital_signals"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    date: Mapped[datetime] = mapped_column(DateTime, nullable=False, index=True)
+    source: Mapped[str] = mapped_column(String, nullable=False)
+    keyword: Mapped[str] = mapped_column(String, nullable=False)
+    signal_value: Mapped[float] = mapped_column(Float, nullable=False)
+    region_id: Mapped[int] = mapped_column(ForeignKey("geographic_regions.id"))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+
 # ============================================================================
 # Analysis Tables
 # ============================================================================

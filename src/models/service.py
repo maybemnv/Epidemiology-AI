@@ -82,7 +82,7 @@ class ModelService:
             return {
                 "status": "not_loaded",
                 "message": (
-                    "Model not loaded. Run the training notebook " "to create a model."
+                    "Model not loaded. Run the training notebook to create a model."
                 ),
             }
 

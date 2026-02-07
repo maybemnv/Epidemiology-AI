@@ -20,8 +20,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="Epidemiology AI API",
         description=(
-            "Disease Outbreak Early Warning System - "
-            "Predict dengue outbreaks using ML"
+            "Disease Outbreak Early Warning System - Predict dengue outbreaks using ML"
         ),
         version="1.0.0",
         docs_url="/docs",

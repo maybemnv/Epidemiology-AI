@@ -80,9 +80,7 @@ async def run_verification():
                 token = response.json()["access_token"]
                 print(f"  Token: {token[:10]}...")
             else:
-                print(
-                    f"✗ Login failed status {response.status_code}: " f"{response.text}"
-                )
+                print(f"✗ Login failed status {response.status_code}: {response.text}")
         except Exception as e:
             print(f"✗ Login Exception: {e}")
 

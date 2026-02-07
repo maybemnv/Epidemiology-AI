@@ -1,24 +1,40 @@
+# Core API & App
 fastapi>=0.128.0
-pydantic>=2.12.5
 uvicorn>=0.40.0
-pandas>=2.3.3
+pydantic>=2.12.5
+pydantic-settings>=2.2.1
+python-dotenv>=1.2.1
+python-multipart>=0.0.20
+email-validator>=2.1.0
+jinja2>=3.1.4
+
+# Database
+sqlalchemy>=2.0.36
+asyncpg>=0.31.0
+psycopg2-binary>=2.9.10
+alembic>=1.17.2
+
+# Data Science / ML
 numpy>=2.4.0
+pandas>=2.3.3
 scikit-learn>=1.8.0
 xgboost>=3.1.2
 matplotlib>=3.10.8
 seaborn>=0.13.2
-python-dotenv>=1.2.1
-requests>=2.32.3
-sqlalchemy>=2.0.36
-psycopg2-binary>=2.9.10
-passlib>=1.7.4
+pytrends>=4.9.0
+
+# Auth
+passlib[bcrypt]>=1.7.4
+python-jose[cryptography]>=3.5.0
 bcrypt>=4.2.1
-python-multipart>=0.0.20
-jinja2>=3.1.4
+
+# Utilities
+requests>=2.32.3
+httpx>=0.27.0
 python-dateutil>=2.9.0
-email-validator>=2.1.0
-pydantic-settings>=2.2.1 # Added for config management
 
 # Development and Formatting Tools
 black==26.1.0
 flake8==7.3.0
+pre-commit>=4.5.1
+pytest>=8.0.0

@@ -7,45 +7,31 @@ requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.17.2",
     "asyncpg>=0.31.0",
-    "aws>=0.2.5",
-    "bcrypt>=5.0.0",
-    "dask>=2025.12.0",
-    "docker>=7.1.0",
+    "bcrypt>=4.2.1",
+    "black==26.1.0",
+    "email-validator>=2.1.0",
     "fastapi>=0.128.0",
-    "flake8>=7.3.0",
-    "google-genai>=1.56.0",
-    "greenlet>=3.3.0",
-    "httpx>=0.28.1",
-    "jupyter>=1.1.1",
-    "langchain>=1.2.0",
+    "flake8==7.3.0",
+    "httpx>=0.27.0",
+    "jinja2>=3.1.4",
     "matplotlib>=3.10.8",
-    "mlflow>=3.8.1",
     "numpy>=2.4.0",
     "pandas>=2.3.3",
-    "plotly>=6.5.0",
-    "psycopg2-binary>=2.9.11",
-    "pydantic[email]>=2.12.5",
-    "pytest>=9.0.2",
+    "passlib[bcrypt]>=1.7.4",
+    "pre-commit>=4.5.1",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.2.1",
+    "pytest>=8.0.0",
+    "python-dateutil>=2.9.0",
     "python-dotenv>=1.2.1",
-    "python-magic>=0.4.27",
-    "render>=1.0.0",
+    "python-jose[cryptography]>=3.5.0",
+    "python-multipart>=0.0.20",
+    "pytrends>=4.9.0",
+    "requests>=2.32.3",
     "scikit-learn>=1.8.0",
-    "scipy>=1.16.3",
     "seaborn>=0.13.2",
-    "sqlalchemy[asyncio]>=2.0.45",
-    "statsmodels>=0.14.6",
-    "tensorflow>=2.20.0",
+    "sqlalchemy>=2.0.36",
     "uvicorn>=0.40.0",
     "xgboost>=3.1.2",
 ]
-
-[dependency-groups]
-dev = [
-    "pre-commit>=4.5.1",
-]
-
-[tool.flake8]
-exclude = ["frontend/node_modules", ".venv", "__pycache__"]
-max-line-length = 88
-ignore = ["E203", "W503"]
-per-file-ignores = ["__init__.py:F401"]
