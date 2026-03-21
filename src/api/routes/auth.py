@@ -53,6 +53,8 @@ async def login_for_access_token(
 ):
     """
     OAuth2 compatible token login, get an access token for future requests.
+
+    Returns both access_token and refresh_token for token refresh flow.
     """
     # Authenticate user
     result = await db.execute(select(User).where(User.email == form_data.username))
@@ -71,6 +73,54 @@ async def login_for_access_token(
     access_token = security.create_access_token(
         subject=user.email, expires_delta=access_token_expires
     )
+
+    # Also return a refresh token
+    refresh_token = security.create_refresh_token(subject=user.email)
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "refresh_token": refresh_token,
+    }
+
+
+@router.post("/refresh", response_model=schemas.TokenRefreshResponse)
+async def refresh_access_token(
+    token_data: schemas.TokenRefresh,
+    db: Annotated[AsyncSession, Depends(get_db)],
+):
+    """
+    Refresh access token using a valid refresh token.
+
+    Send the refresh token received during login to get a new access token.
+    """
+    # Verify the refresh token
+    email = security.verify_token(token_data.refresh_token, token_type="refresh")
+
+    if not email:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired refresh token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # Check if user still exists and is active
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalars().first()
+
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found or inactive",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # Create new access token
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = security.create_access_token(
+        subject=user.email, expires_delta=access_token_expires
+    )
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -82,3 +132,18 @@ async def read_users_me(
     Get current logged in user.
     """
     return current_user
+
+
+@router.get("/me/check-permissions")
+async def check_user_permissions(
+    current_user: Annotated[User, Depends(schema_deps.get_current_user)],
+):
+    """
+    Check current user's permissions and role.
+    """
+    return {
+        "email": current_user.email,
+        "is_active": current_user.is_active,
+        "is_superuser": current_user.is_superuser,
+        "full_name": current_user.full_name,
+    }

@@ -157,7 +157,68 @@ class User(UserBase):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    refresh_token: Optional[str] = None
+
+
+class TokenRefreshResponse(BaseModel):
+    """Response model for token refresh - only returns access token"""
+
+    access_token: str
+    token_type: str
+
+
+class TokenRefresh(BaseModel):
+    """Request model for token refresh"""
+
+    refresh_token: str
 
 
 class TokenData(BaseModel):
     email: Optional[str] = None
+
+
+# ============================================================================
+# Alert Schemas
+# ============================================================================
+
+
+class AlertBase(BaseModel):
+    """Base schema for alerts"""
+
+    severity: str = Field(..., description="Alert severity: Warning or Critical")
+    message: str = Field(..., description="Alert message")
+    region_id: int = Field(..., description="Region ID for the alert")
+
+
+class AlertCreate(AlertBase):
+    """Schema for creating a new alert"""
+
+    assigned_to_id: Optional[int] = None
+
+
+class AlertUpdate(BaseModel):
+    """Schema for updating an alert"""
+
+    severity: Optional[str] = Field(None, description="Alert severity")
+    message: Optional[str] = Field(None, description="Alert message")
+    status: Optional[str] = Field(
+        None, description="Alert status: New, Acknowledged, Resolved"
+    )
+    assigned_to_id: Optional[int] = None
+
+
+class Alert(AlertBase):
+    """Schema for alert response"""
+
+    id: int
+    created_at: datetime
+    status: str
+    assigned_to_id: Optional[int] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AlertStatusUpdate(BaseModel):
+    """Schema for alert status updates (acknowledge/resolve)"""
+
+    pass

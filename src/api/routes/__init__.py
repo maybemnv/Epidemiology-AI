@@ -11,6 +11,7 @@ from .predictions import router as predictions_router
 from .model import router as model_router
 from .auth import router as auth_router
 from .ingestion import router as ingestion_router
+from .alerts import router as alerts_router
 
 # Create main API router
 api_router = APIRouter(prefix="/api/v1")
@@ -20,5 +21,6 @@ api_router.include_router(auth_router, prefix="/auth", tags=["Auth"])
 api_router.include_router(predictions_router)
 api_router.include_router(model_router)
 api_router.include_router(ingestion_router, prefix="/ingest", tags=["Data Ingestion"])
+api_router.include_router(alerts_router)
 
 __all__ = ["health_router", "api_router"]

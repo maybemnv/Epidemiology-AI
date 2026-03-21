@@ -34,8 +34,49 @@ def create_access_token(
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
 
-    to_encode = {"exp": expire, "sub": str(subject)}
+    to_encode = {"exp": expire, "sub": str(subject), "type": "access"}
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )
     return encoded_jwt
+
+
+def create_refresh_token(
+    subject: Union[str, Any], expires_delta: Optional[timedelta] = None
+) -> str:
+    """Create a refresh token with longer expiration"""
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(
+            days=settings.REFRESH_TOKEN_EXPIRE_DAYS
+        )
+
+    to_encode = {"exp": expire, "sub": str(subject), "type": "refresh"}
+    encoded_jwt = jwt.encode(
+        to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+    )
+    return encoded_jwt
+
+
+def verify_token(token: str, token_type: str = "access") -> Optional[str]:
+    """
+    Verify a JWT token and return the subject (email).
+
+    Args:
+        token: JWT token string
+        token_type: Expected token type ("access" or "refresh")
+
+    Returns:
+        Subject (email) if valid, None otherwise
+    """
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
+        token_payload_type = payload.get("type")
+        if token_payload_type != token_type:
+            return None
+        return payload.get("sub")
+    except jwt.JWTError:
+        return None

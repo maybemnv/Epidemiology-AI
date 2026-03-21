@@ -89,12 +89,6 @@ This will run the prototype that demonstrates the core concept of using multiple
 
 The `documentation/` folder contains comprehensive documentation for the project:
 
-### Getting Started
-
-- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute demo guide
-- **[data-guide.md](documentation/data-guide.md)** - How to acquire datasets
-- **[setup-guide.md](documentation/setup-guide.md)** - Installation & troubleshooting
-
 ### Design Documents
 
 - `PRD.md` - Product Requirements Document
@@ -117,11 +111,3 @@ Our system addresses the critical need for early disease outbreak detection by c
 - 90% accuracy in outbreak predictions
 - Reduction in false positive alerts to less than 10%
 - Scalable solution applicable to multiple diseases and regions
-
-## Current Status
-
-- Complete system architecture and technical specifications
-- Data source research and API integration planning
-- Frontend and backend design specifications
-- ML model development framework
-- Ready for implementation phase
