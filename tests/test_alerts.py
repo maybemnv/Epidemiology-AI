@@ -6,21 +6,11 @@ Test CRUD operations for alerts.
 
 import pytest
 from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from main import app
 from src.database.core import get_db
 from src.database.models import Alert, GeographicRegion, User
 from src.core import security
-
-
-# Test database setup
-@pytest.fixture
-async def db_session():
-    """Create a fresh database session for tests"""
-    async with async_sessionmaker() as session:
-        yield session
-        await session.rollback()
 
 
 @pytest.fixture

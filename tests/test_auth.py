@@ -6,24 +6,13 @@ Test registration, login, token refresh, and user endpoints.
 
 import pytest
 from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from main import app
 from src.database.core import get_db
 from src.database.models import User
 from src.core import security
-
-
-# Test database setup
-@pytest.fixture
-async def db_session():
-    """Create a fresh database session for tests"""
-    # Use in-memory or test database
-    async with async_sessionmaker() as session:
-        yield session
-        # Cleanup after test
-        await session.rollback()
 
 
 @pytest.fixture
