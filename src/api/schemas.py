@@ -117,6 +117,10 @@ class TokenRefreshResponse(BaseModel):
     token_type: str = "bearer"
 
 
+class TokenData(BaseModel):
+    email: Optional[str] = None
+
+
 # =============================================================================
 # Disease Schemas
 # =============================================================================

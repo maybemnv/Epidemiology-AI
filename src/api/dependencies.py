@@ -133,7 +133,7 @@ async def get_current_active_superuser(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Inactive user",
         )
-    if not current_user.is_superuser:
+    if current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="The user doesn't have enough privileges",
