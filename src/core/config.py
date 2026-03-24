@@ -17,8 +17,18 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/epidemiology_db"
 
+    # Redis/Celery
+    REDIS_URL: str = "redis://localhost:6379/0"
+
     # External APIs
     NOAA_API_KEY: str = ""
+
+    # Email/Alerts
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    ALERT_FROM_EMAIL: str = "alerts@epidemiology-ai.org"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

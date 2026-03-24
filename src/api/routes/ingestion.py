@@ -1,114 +1,136 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+"""
+Data Ingestion Routes
+
+Endpoints for ingesting outbreak, environmental, and digital signals data.
+"""
+
+from typing import List, Annotated
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Annotated, List
-from pydantic import BaseModel
-from datetime import datetime
-import tempfile
-import os
 
 from ...database.core import get_db
-from ...services.ingestion import (
-    WeatherIngestionService,
-    DiseaseDataIngestionService,
-    DigitalSignalsIngestionService,
+from ...database.models import User, Disease, GeographicRegion
+from ..schemas import (
+    OutbreakDataIngest,
+    EnvironmentalDataIngest,
+    DigitalSignalIngest,
+    IngestionResponse,
 )
+from ..dependencies import get_current_active_user
+from ...services.etl import ETLService
 
-router = APIRouter()
-
-
-class WeatherIngestRequest(BaseModel):
-    region_id: int
-    start_date: str
-    end_date: str
+router = APIRouter(prefix="/data", tags=["Data Ingestion"])
 
 
-class TrendsIngestRequest(BaseModel):
-    keywords: List[str]
-    region: str
-    region_id: int
-    timeframe: str = "today 3-m"
-
-
-class IngestResponse(BaseModel):
-    status: str
-    records_ingested: int
-    message: str
-    timestamp: datetime
-
-
-@router.post("/weather", response_model=IngestResponse)
-async def ingest_weather(
-    request: WeatherIngestRequest, db: Annotated[AsyncSession, Depends(get_db)]
+@router.post("/outbreaks", response_model=IngestionResponse)
+async def ingest_outbreak_data(
+    data: List[OutbreakDataIngest],
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_active_user)],
 ):
-    """Ingest weather data from NOAA API."""
-    try:
-        service = WeatherIngestionService(db)
-        result = await service.ingest(
-            region_id=request.region_id,
-            start_date=request.start_date,
-            end_date=request.end_date,
-        )
+    """
+    Ingest outbreak data from external sources.
 
-        return IngestResponse(
-            status=result["status"],
-            records_ingested=result["records_ingested"],
-            message=f"Ingested weather data for region {request.region_id}",
-            timestamp=result["timestamp"],
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    Accepts batch data for bulk insertion. Requires authentication.
+    """
+    etl = ETLService(db)
+
+    for record in data:
+        disease = await db.get(Disease, record.disease_id)
+        if not disease:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Disease with ID {record.disease_id} not found",
+            )
+
+        region = await db.get(GeographicRegion, record.region_id)
+        if not region:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Region with ID {record.region_id} not found",
+            )
+
+    raw_data = [record.model_dump() for record in data]
+    result = await etl.ingest_outbreak_data(raw_data)
+
+    return IngestionResponse(
+        success=result.success,
+        records_processed=result.records_processed,
+        records_inserted=result.records_inserted,
+        records_updated=result.records_updated,
+        errors=result.errors,
+    )
 
 
-@router.post("/disease", response_model=IngestResponse)
-async def ingest_disease_csv(
-    disease_id: int,
-    region_id: int,
-    file: UploadFile = File(...),  # noqa: B008
-    db: AsyncSession = Depends(get_db),  # noqa: B008
+@router.post("/environmental", response_model=IngestionResponse)
+async def ingest_environmental_data(
+    data: List[EnvironmentalDataIngest],
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_active_user)],
 ):
-    """Ingest disease outbreak data from CSV file."""
-    try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
-            content = await file.read()
-            tmp.write(content)
-            tmp_path = tmp.name
+    """
+    Ingest environmental/weather data from external sources.
 
-        service = DiseaseDataIngestionService(db)
-        result = await service.ingest(
-            file_path=tmp_path, disease_id=disease_id, region_id=region_id
-        )
+    Accepts batch data for bulk insertion. Requires authentication.
+    """
+    etl = ETLService(db)
 
-        os.unlink(tmp_path)
+    for record in data:
+        region = await db.get(GeographicRegion, record.region_id)
+        if not region:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Region with ID {record.region_id} not found",
+            )
 
-        return IngestResponse(
-            status=result["status"],
-            records_ingested=result["records_ingested"],
-            message=f"Ingested disease data from {file.filename}",
-            timestamp=result["timestamp"],
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    raw_data = [record.model_dump() for record in data]
+    result = await etl.ingest_environmental_data(raw_data)
+
+    return IngestionResponse(
+        success=result.success,
+        records_processed=result.records_processed,
+        records_inserted=result.records_inserted,
+        records_updated=result.records_updated,
+        errors=result.errors,
+    )
 
 
-@router.post("/trends", response_model=IngestResponse)
-async def ingest_trends(
-    request: TrendsIngestRequest, db: Annotated[AsyncSession, Depends(get_db)]
+@router.post("/digital-signals", response_model=IngestionResponse)
+async def ingest_digital_signals(
+    data: List[DigitalSignalIngest],
+    db: Annotated[AsyncSession, Depends(get_db)],
+    current_user: Annotated[User, Depends(get_current_active_user)],
 ):
-    """Ingest digital signals from Google Trends."""
-    try:
-        service = DigitalSignalsIngestionService(db)
-        result = await service.ingest(
-            keywords=request.keywords,
-            region=request.region,
-            region_id=request.region_id,
-            timeframe=request.timeframe,
-        )
+    """
+    Ingest digital surveillance signals (Google Trends, social media, etc.).
 
-        return IngestResponse(
-            status=result["status"],
-            records_ingested=result["records_ingested"],
-            message=f"Ingested trends for keywords: {', '.join(request.keywords)}",
-            timestamp=result["timestamp"],
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    Accepts batch data for bulk insertion. Requires authentication.
+    """
+    etl = ETLService(db)
+
+    for record in data:
+        region = await db.get(GeographicRegion, record.region_id)
+        if not region:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Region with ID {record.region_id} not found",
+            )
+
+        if record.disease_id:
+            disease = await db.get(Disease, record.disease_id)
+            if not disease:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Disease with ID {record.disease_id} not found",
+                )
+
+    raw_data = [record.model_dump() for record in data]
+    result = await etl.ingest_digital_signals(raw_data)
+
+    return IngestionResponse(
+        success=result.success,
+        records_processed=result.records_processed,
+        records_inserted=result.records_inserted,
+        records_updated=result.records_updated,
+        errors=result.errors,
+    )

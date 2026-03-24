@@ -12,6 +12,9 @@ from .model import router as model_router
 from .auth import router as auth_router
 from .ingestion import router as ingestion_router
 from .alerts import router as alerts_router
+from .diseases import router as diseases_router
+from .regions import router as regions_router
+from .analytics import router as analytics_router
 
 # Create main API router
 api_router = APIRouter(prefix="/api/v1")
@@ -22,5 +25,8 @@ api_router.include_router(predictions_router)
 api_router.include_router(model_router)
 api_router.include_router(ingestion_router, prefix="/ingest", tags=["Data Ingestion"])
 api_router.include_router(alerts_router)
+api_router.include_router(diseases_router)
+api_router.include_router(regions_router)
+api_router.include_router(analytics_router)
 
 __all__ = ["health_router", "api_router"]
