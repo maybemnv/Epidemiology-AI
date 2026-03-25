@@ -11,7 +11,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 import logging
 
-from ..database.models import (
+from ...database.models import (
     OutbreakData,
     EnvironmentalData,
     DigitalSignal,

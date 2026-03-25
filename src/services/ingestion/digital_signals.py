@@ -13,7 +13,7 @@ from pytrends.request import TrendReq
 logger = logging.getLogger(__name__)
 
 
-class DigitalSignalsClient:
+class DigitalSignalsIngestionService:
     """Client for Google Trends API via pytrends"""
 
     def __init__(self):

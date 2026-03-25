@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 settings = get_settings()
 
 
-class WeatherDataClient:
+class WeatherIngestionService:
     """Client for NOAA weather API"""
 
     def __init__(self):

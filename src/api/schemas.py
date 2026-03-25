@@ -70,6 +70,19 @@ class AccessLevel(str, Enum):
 
 
 # =============================================================================
+# Error Schemas
+# =============================================================================
+
+
+class ErrorResponse(BaseModel):
+    """Standard error response"""
+
+    detail: str
+    error_code: Optional[str] = None
+    timestamp: datetime = Field(default_factory=datetime.now)
+
+
+# =============================================================================
 # Authentication Schemas
 # =============================================================================
 
