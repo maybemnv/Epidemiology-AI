@@ -1,7 +1,4 @@
 # Epidemiology AI: Disease Outbreak Early Warning System
-
-> **Quick Start**: Run `python main.py` for instructions, or jump straight to [QUICKSTART.md](QUICKSTART.md) for a 5-minute demo!
-
 ## Overview
 
 Epidemiology AI is an AI-powered system that analyzes real-time data from multiple sources to predict potential disease outbreaks earlier than traditional surveillance methods. Our solution combines epidemiological data, climate data, social indicators, and environmental factors to provide early warning alerts to public health officials.
